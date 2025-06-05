@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 )
 
 var _ = net.Listen
@@ -26,7 +27,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Fprintf(conn, "HTTP/1.1 200 OK\r\n\r\n")
+	var request string
+	request, _ = bufio.NewReader(conn).ReadString('\n')
 
-	bufio.NewReader(conn).ReadString('\n')
+	first_line := strings.Fields(request)
+
+	if first_line[1] == "/" {
+		fmt.Fprintf(conn, "HTTP/1.1 200 OK\r\n\r\n")
+	} else {
+		fmt.Fprintf(conn, "HTTP/1.1 404 Not Found\r\n\r\n")
+	}
+
 }
