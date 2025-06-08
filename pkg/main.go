@@ -8,6 +8,7 @@ import (
 
 var _ = net.Listen
 var _ = os.Exit
+var ServerEncodings = []string{"gzip"}
 
 func main() {
 	if err := server(); err != nil {
